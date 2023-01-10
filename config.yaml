@@ -1,0 +1,13 @@
+path:
+  config: config
+  original_data: all_data
+  data_path: train_data
+  model_pah: trained_model
+
+ml_parameters:
+  # 观看历史天数
+  look_back: 15
+  # 预测后几天的和
+  look_up: 5
+
+
