@@ -1,0 +1,188 @@
+turn__variance_larger_than_standard_deviation
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.2
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.4
+turn__linear_trend__attr_"stderr"
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.2
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.4
+turn__max_langevin_fixed_point__m_3__r_30
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.0
+turn__standard_deviation
+turn__variance
+turn__maximum
+turn__absolute_maximum
+turn__cid_ce__normalize_False
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.0
+turn__agg_linear_trend__attr_"stderr"__chunk_len_5__f_agg_"max"
+turn__agg_linear_trend__attr_"stderr"__chunk_len_5__f_agg_"var"
+turn__fft_coefficient__attr_"abs"__coeff_1
+turn__agg_linear_trend__attr_"stderr"__chunk_len_5__f_agg_"mean"
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.6
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.4
+turn__fft_coefficient__attr_"abs"__coeff_5
+turn__mean_abs_change
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.0
+turn__absolute_sum_of_changes
+turn__mean_n_absolute_max__number_of_maxima_7
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.6
+turn__root_mean_square
+turn__abs_energy
+turn__quantile__q_0.9
+turn__c3__lag_1
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.6
+turn__cwt_coefficients__coeff_14__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_13__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_13__w_10__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_12__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_14__w_10__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_12__w_10__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_11__w_20__widths_(2, 5, 10, 20)
+turn__sum_values
+turn__fft_coefficient__attr_"real"__coeff_0
+turn__fft_coefficient__attr_"abs"__coeff_0
+turn__mean
+turn__cwt_coefficients__coeff_10__w_20__widths_(2, 5, 10, 20)
+turn__c3__lag_3
+turn__c3__lag_2
+turn__cwt_coefficients__coeff_11__w_10__widths_(2, 5, 10, 20)
+turn__fft_coefficient__attr_"abs"__coeff_9
+pbMRQ__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.4
+turn__quantile__q_0.8
+turn__cwt_coefficients__coeff_10__w_10__widths_(2, 5, 10, 20)
+turn__fft_coefficient__attr_"abs"__coeff_4
+pbMRQ__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.4
+turn__cwt_coefficients__coeff_9__w_20__widths_(2, 5, 10, 20)
+turn__fft_coefficient__attr_"abs"__coeff_3
+turn__spkt_welch_density__coeff_2
+turn__fft_coefficient__attr_"abs"__coeff_7
+turn__fft_coefficient__attr_"abs"__coeff_2
+turn__cwt_coefficients__coeff_9__w_10__widths_(2, 5, 10, 20)
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_0.8__ql_0.2
+turn__cwt_coefficients__coeff_8__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_7__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_8__w_10__widths_(2, 5, 10, 20)
+turn__quantile__q_0.7
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_0.8__ql_0.0
+turn__fft_coefficient__attr_"abs"__coeff_8
+turn__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+pbMRQ__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.4
+turn__fft_coefficient__attr_"abs"__coeff_6
+turn__agg_linear_trend__attr_"stderr"__chunk_len_5__f_agg_"min"
+volume__fft_coefficient__attr_"abs"__coeff_1
+turn__cwt_coefficients__coeff_7__w_10__widths_(2, 5, 10, 20)
+pbMRQ__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.2
+pctChg__time_reversal_asymmetry_statistic__lag_2
+turn__cwt_coefficients__coeff_5__w_20__widths_(2, 5, 10, 20)
+pbMRQ__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.6
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.0
+turn__spkt_welch_density__coeff_5
+pbMRQ__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.2
+turn__cwt_coefficients__coeff_4__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_6__w_10__widths_(2, 5, 10, 20)
+pbMRQ__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.6
+turn__quantile__q_0.6
+turn__cwt_coefficients__coeff_3__w_20__widths_(2, 5, 10, 20)
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_0.8__ql_0.0
+pbMRQ__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.2
+volume__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.2
+pctRange__cwt_coefficients__coeff_7__w_10__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_5__w_10__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_5__w_20__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_8__w_10__widths_(2, 5, 10, 20)
+volume__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.6
+pctRange__cwt_coefficients__coeff_6__w_10__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_6__w_20__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_4__w_20__widths_(2, 5, 10, 20)
+pbMRQ__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.6
+turn__cwt_coefficients__coeff_2__w_20__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_9__w_10__widths_(2, 5, 10, 20)
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.2
+pctRange__cwt_coefficients__coeff_3__w_20__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_5__w_10__widths_(2, 5, 10, 20)
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_0.8__ql_0.2
+turn__cwt_coefficients__coeff_4__w_10__widths_(2, 5, 10, 20)
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_0.6__ql_0.0
+turn__agg_linear_trend__attr_"intercept"__chunk_len_10__f_agg_"var"
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_0.8__ql_0.4
+pctRange__cwt_coefficients__coeff_7__w_20__widths_(2, 5, 10, 20)
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_0.6__ql_0.0
+turn__agg_linear_trend__attr_"intercept"__chunk_len_10__f_agg_"max"
+turn__cwt_coefficients__coeff_1__w_20__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_4__w_10__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_2__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_3__w_10__widths_(2, 5, 10, 20)
+turn__agg_linear_trend__attr_"intercept"__chunk_len_10__f_agg_"mean"
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_0.8__ql_0.4
+turn__median
+volume__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.6
+pctRange__agg_linear_trend__attr_"intercept"__chunk_len_5__f_agg_"mean"
+volume__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.2
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_0.4__ql_0.0
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_0.6__ql_0.0
+turn__cwt_coefficients__coeff_0__w_20__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_3__w_10__widths_(2, 5, 10, 20)
+turn__minimum
+turn__cwt_coefficients__coeff_14__w_5__widths_(2, 5, 10, 20)
+pctRange__cwt_coefficients__coeff_1__w_20__widths_(2, 5, 10, 20)
+turn__cwt_coefficients__coeff_2__w_10__widths_(2, 5, 10, 20)
+psTTM__has_duplicate
+volume__change_quantiles__f_agg_"var"__isabs_False__qh_1.0__ql_0.4
+peTTM__has_duplicate
+pcfNcfTTM__has_duplicate
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_0.4__ql_0.0
+turn__quantile__q_0.4
+pbMRQ__has_duplicate
+turn__cwt_coefficients__coeff_1__w_10__widths_(2, 5, 10, 20)
+turn__quantile__q_0.3
+turn__cwt_coefficients__coeff_0__w_10__widths_(2, 5, 10, 20)
+volume__fft_coefficient__attr_"abs"__coeff_3
+volume__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.4
+volume__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.6
+turn__quantile__q_0.2
+turn__fft_coefficient__attr_"abs"__coeff_10
+turn__change_quantiles__f_agg_"var"__isabs_False__qh_0.8__ql_0.4
+volume__fft_coefficient__attr_"abs"__coeff_5
+pctChg__has_duplicate
+turn__quantile__q_0.1
+psTTM__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.4
+pcfNcfTTM__range_count__max_1__min_-1
+pcfNcfTTM__value_count__value_0
+volume__fft_coefficient__attr_"abs"__coeff_4
+pbMRQ__skewness
+pctChg__variance_larger_than_standard_deviation
+turn__agg_linear_trend__attr_"intercept"__chunk_len_10__f_agg_"min"
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_0.6__ql_0.2
+turn__agg_linear_trend__attr_"intercept"__chunk_len_5__f_agg_"min"
+turn__change_quantiles__f_agg_"var"__isabs_True__qh_0.4__ql_0.0
+turn__range_count__max_1__min_-1
+psTTM__skewness
+pctChg__skewness
+peTTM__variance_larger_than_standard_deviation
+psTTM__change_quantiles__f_agg_"var"__isabs_True__qh_1.0__ql_0.6
+pctChg__fft_coefficient__attr_"imag"__coeff_2
+pbMRQ__energy_ratio_by_chunks__num_segments_10__segment_focus_2
+pctRange__energy_ratio_by_chunks__num_segments_10__segment_focus_8
+volume__variation_coefficient
+peTTM__agg_linear_trend__attr_"rvalue"__chunk_len_5__f_agg_"var"
+turn__variation_coefficient
+pctChg__cwt_coefficients__coeff_12__w_20__widths_(2, 5, 10, 20)
+pctChg__cwt_coefficients__coeff_13__w_20__widths_(2, 5, 10, 20)
+pctChg__cwt_coefficients__coeff_14__w_20__widths_(2, 5, 10, 20)
+peTTM__agg_linear_trend__attr_"intercept"__chunk_len_5__f_agg_"var"
+pctChg__agg_linear_trend__attr_"intercept"__chunk_len_5__f_agg_"min"
+pctChg__cwt_coefficients__coeff_13__w_10__widths_(2, 5, 10, 20)
+pctChg__cwt_coefficients__coeff_14__w_10__widths_(2, 5, 10, 20)
+pbMRQ__count_below_mean
+pbMRQ__count_above_mean
+pctRange__index_mass_quantile__q_0.8
+turn__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.8
+peTTM__agg_linear_trend__attr_"slope"__chunk_len_5__f_agg_"var"
+pctChg__agg_linear_trend__attr_"rvalue"__chunk_len_5__f_agg_"mean"
+psTTM__energy_ratio_by_chunks__num_segments_10__segment_focus_9
+pbMRQ__energy_ratio_by_chunks__num_segments_10__segment_focus_9
+pctChg__fft_coefficient__attr_"angle"__coeff_0
+turn__cwt_coefficients__coeff_2__w_2__widths_(2, 5, 10, 20)
+volume__change_quantiles__f_agg_"mean"__isabs_True__qh_1.0__ql_0.8
+pctChg__agg_linear_trend__attr_"rvalue"__chunk_len_5__f_agg_"min"
+pctChg__agg_linear_trend__attr_"slope"__chunk_len_5__f_agg_"min"
+pbMRQ__longest_strike_above_mean

@@ -35,14 +35,14 @@ def get_samples(path, features:list, look_back=15, look_up=5):
     df['pctRange'] = (df['high'] - df['low']) / df['low']
     # 加入close似乎有负面的影响 2022-01-12
     df = df[features]
-
-    ret_x, ret_y = pd.DataFrame(), {}
+    #便于后续的采样，ret_x使用list来存储
+    ret_x, ret_y = [], pd.Series()
     n = len(df)
     for i in range(n - look_back - look_up):
         x = df.iloc[i:i + look_back]
         x['code_s'] = code_name + '_' + str(i)
         y = sum(df['pctChg'].iloc[i + look_back:i + look_back + look_up])
-        ret_x = ret_x.append(x)
+        ret_x.append(x)
         ret_y[code_name + '_' + str(i)] = y
     return ret_x, ret_y
 
@@ -50,20 +50,24 @@ def get_samples(path, features:list, look_back=15, look_up=5):
 # 特征筛选
 def featured_select(path_list, path, config):
     # 参数
-    sample_num, sample_batch_size, sample_rate = config['sample_num'], config[
-        'sample_batch_size'], config['sample_rate']
+    sample_num, sample_batch_size, sample_rate, sample_ts_num = config['sample_num'], config[
+        'sample_batch_size'], config['sample_rate'], config['sample_ts_num']
     look_back, look_up = config['look_back'], config['look_up']
     n_job = config['n_job']
     # 初始化
     sample_list = sample(path_list, sample_num)
     collected_x = pd.DataFrame()
-    collected_y = {}
+    collected_y = pd.Series()
     all_features = []
+    # tsfresh 自带多进程，无需额外在开启
     for idx, p in enumerate(tqdm(sample_list), start=1):
         x, y = get_samples(p, config['original_features'], look_back, look_up)
-        collected_x = collected_x.append(x)
-        collected_y.update(y)
+        sample_ts_set = sample(range(len(x)), min(sample_ts_num, len(x)))
+        sample_x = [x[i] for i in sample_ts_set]
+        collected_x = pd.concat([collected_x] + sample_x)
+        collected_y = pd.concat([collected_y, y.iloc[sample_ts_set]])
         if idx % sample_batch_size == 0:
+            # 后续考虑丢弃缺失值，目前暂定fillna
             y = pd.Series(collected_y).fillna(0)
             collected_x = collected_x.fillna(0)
             # 提取相关特征
@@ -75,7 +79,7 @@ def featured_select(path_list, path, config):
                 disable_progressbar=True)
             all_features.extend(list(featured_x.columns))
             collected_x = pd.DataFrame()
-            collected_y = {}
+            collected_y = pd.Series()
 
     # 特征数量选择
     all_features = [f + '\n' for f in all_features]
@@ -101,7 +105,7 @@ def merge_samples(path_list, config):
     n_job = ml_parameters['n_job']
     train_batch = ml_parameters['train_batch']
     # 数据返回
-    collected_x, collected_y = pd.DataFrame(), {}
+    collected_x, collected_y = pd.DataFrame(), pd.Series()
     ret_df = pd.DataFrame()
     num = 0
     # 特征筛选 检查是否做过
@@ -112,8 +116,8 @@ def merge_samples(path_list, config):
 
     for num, p in enumerate(tqdm(path_list), start=1):
         x, y = get_samples(p, ml_parameters['original_features'], look_back, look_up)
-        collected_x = collected_x.append(x)
-        collected_y.update(y)
+        collected_x = pd.concat([collected_x] + x)
+        collected_y = pd.concat([collected_y, y])
         collected_x = collected_x.fillna(0.)
 
         if num % train_batch == 0 or num == len(path_list):
@@ -126,7 +130,7 @@ def merge_samples(path_list, config):
             featured_x['target'] = collected_y
             ret_df = ret_df.append(featured_x)
             collected_x = pd.DataFrame()
-            collected_y = {}
+            collected_y = pd.Series()
 
     return ret_df
 
@@ -144,7 +148,9 @@ def data_process(config, force=False):
         n_split = int(len(r_all_paths) * ml_parameters['train_split'])
         train_paths, vaild_paths = r_all_paths[:n_split], r_all_paths[n_split:]
         # 特征选择，这里采用的是随机采样QAQ
-        features = featured_select(train_paths, paths['config'], ml_parameters)
+        if config['featured_extract']:
+            features = featured_select(train_paths, paths['config'], ml_parameters)
+            print("特征提取完毕，请在config目录下查看")
         # 数据处理
         train_data = merge_samples(train_paths, config)
         train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),

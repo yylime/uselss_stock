@@ -9,7 +9,7 @@ from datetime import date
 import os
 from tqdm import tqdm
 from multiprocessing import Pool
-import sys
+import multiprocessing
 from tqdm import tqdm
 
 bs.login()
@@ -45,7 +45,6 @@ def download_one(path, start_date='2019-01-01', end_date=date.today().strftime(r
 
 
 def download_online_codes(path):
-    bs.login()
     stock_rs = bs.query_all_stock('2022-12-27')
     result = stock_rs.get_data()
     ret = []
@@ -63,7 +62,7 @@ def download_online_codes(path):
                     is_online_stock = False
             if is_online_stock:
                 ret.append(",".join(rs.data[0]) + '\n')
-    with open(os.path.join(path, 'code.txt'), 'w') as f:
+    with open(path, 'w') as f:
         f.writelines(ret)
     bs.logout()
     return ret
@@ -79,7 +78,7 @@ def download_all(config):
     codes = [os.path.join(config['original_data'], line.split(',')[0]) for line in lines]
     # 这里使用多线程下载
     with Pool(12) as workers:
-        with tqdm(total=len(codes), file=sys.stdout) as pbar:
+        with tqdm(total=len(codes)) as pbar:
             for _ in workers.imap(download_one, codes):
                 pbar.update()
     bs.logout()
@@ -88,5 +87,5 @@ def download_all(config):
 if __name__ == '__main__':
 
     # 第一次运行需要加入
-    download_online_codes()
+    # download_online_codes()
     download_all("config/code.txt")

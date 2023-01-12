@@ -33,7 +33,7 @@ class Trainer:
             print(index, metrics.mean_squared_error(valid_y, valid_predict))
             oof[valid_idx] = valid_predict
 
-        mean_squared_error = mean_squared_error(self.y, oof)
+        mean_squared_error = metrics.mean_squared_error(self.y, oof)
         print("mean_squared_error: ", mean_squared_error)
         return mean_squared_error
 

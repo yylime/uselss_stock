@@ -4,18 +4,21 @@ path:
   processed_data: data/processed_data
   trained_model: trained_model
 
-
+# 是否进行特征提取
+featured_extract: False
 
 ml_parameters:
   # batch_size的大小并不会影响效率，但是会包内存
   # 多线程数 
-  n_job: 8
+  n_job: 4
   # 基于tsfresh采样特征股票的数目
   sample_num: 200
+  # 滑动窗口构建的训练数据，每个股票采样的时间序列数目
+  sample_ts_num: 600
   # tsfresh batch_size
   sample_batch_size: 20
   # sample_rate
-  sample_rate: 0.7
+  sample_rate: 0.9
 
   # train_data batch
   train_batch: 200
