@@ -22,6 +22,7 @@ class Trainer:
                 bagging_temperature=0.8,
                 early_stopping_rounds=100,
             )
+            
             train_x, train_y = self.x.iloc[train_idx], self.y.iloc[train_idx]
             valid_x, valid_y = self.x.iloc[valid_idx], self.y.iloc[valid_idx]
 

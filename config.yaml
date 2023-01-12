@@ -1,13 +1,31 @@
 path:
   config: config
-  original_data: all_data
-  data_path: train_data
-  model_pah: trained_model
+  original_data: data/all_data
+  processed_data: data/processed_data
+  trained_model: trained_model
+
+
 
 ml_parameters:
+  # batch_size的大小并不会影响效率，但是会包内存
+  # 多线程数 
+  n_job: 8
+  # 基于tsfresh采样特征股票的数目
+  sample_num: 200
+  # tsfresh batch_size
+  sample_batch_size: 20
+  # sample_rate
+  sample_rate: 0.7
+
+  # train_data batch
+  train_batch: 200
+
   # 观看历史天数
-  look_back: 15
+  look_back: 20
   # 预测后几天的和
   look_up: 5
+  train_split: 0.9
+
+  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'peTTM', 'pbMRQ', 'psTTM', 'pcfNcfTTM']
 
 

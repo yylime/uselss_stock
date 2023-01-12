@@ -10,7 +10,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def get_now_sample(data_dir, look_back=15):
+def get_now_sample(data_dir, look_back=20):
     collected_x = pd.DataFrame()
 
     codes = []
