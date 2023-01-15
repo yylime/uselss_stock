@@ -13,9 +13,16 @@ import multiprocessing
 from tqdm import tqdm
 
 bs.login()
-# path 中包含了股票的代码
-def download_one(path, start_date='2019-01-01', end_date=date.today().strftime(r"%Y-%m-%d")):
+
+
+# path 中包含了股票的代码, 不包括创业板和st
+def download_one(path,
+                 start_date='2019-01-01',
+                 end_date=date.today().strftime(r"%Y-%m-%d")):
     code = os.path.basename(path)
+    # 只看深市和上市
+    if (code.split('.')[1][0] != '0' and code.split('.')[1][0] != '6') or code.split('.')[1][:3] == '688':
+        return
     # 添加后缀
     path = path + ".csv"
     if os.path.exists(path) and os.path.getsize(path) > 1:
@@ -32,13 +39,15 @@ def download_one(path, start_date='2019-01-01', end_date=date.today().strftime(r
     rs = bs.query_history_k_data_plus(
         code,
         # 指标的中文对应可以参考 http://baostock.com/baostock/index.php/A%E8%82%A1K%E7%BA%BF%E6%95%B0%E6%8D%AE
-        "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,"
-        "pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM",
+        "date,code,open,high,low,close,preclose,volume,amount,adjustflag,turn,pctChg,peTTM,pbMRQ,psTTM,pcfNcfTTM,isST",
         start_date=start_date,
         end_date=end_date,
         frequency="d",
         adjustflag="3")
     data = pd.concat([data, rs.get_data()])
+    # 剔除st
+    if "1" in data['isST'].values:
+        return None
     data = data.drop_duplicates(['date'])
     data.to_csv(path, encoding='utf-8', index=False)
     return None
@@ -49,7 +58,7 @@ def download_online_codes(path):
     result = stock_rs.get_data()
     ret = []
     for i in tqdm(range(len(result))):
-        code, status, code_name  = result.iloc[i]
+        code, status, code_name = result.iloc[i]
         if 'bj' in code: continue
         ## 筛选出还在上市的股票
         if status == "1" and len(code_name) > 0:
@@ -84,8 +93,9 @@ def download_all(config):
     bs.logout()
     return codes
 
+
 if __name__ == '__main__':
 
     # 第一次运行需要加入
     # download_online_codes()
-    download_all("config/code.txt")
+    download_all({'config': 'config', 'original_data': 'data/all_data'})

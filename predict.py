@@ -7,6 +7,8 @@ import tsfresh
 from tqdm import tqdm
 import yaml
 import warnings
+from downloader import download_all
+import numpy as np
 warnings.filterwarnings('ignore')
 
 def decode_configer(path="config.yaml"):
@@ -31,13 +33,15 @@ def get_now_sample(config):
     codes = []
     for p in tqdm(os.listdir(data_dir)):
         df = pd.read_csv(os.path.join(data_dir, p))
+        df['pctChg'] = df['pctChg'].fillna(0)
         # 固有属性
         code_name = df['code'].iloc[0]
         # 要部分特征
         df['pctRange'] = (df['high'] - df['low']) / df['low']
         # 我发现不适用当日的成交价似乎更好一点
         df = df[features]
-        x = df.iloc[-look_back:]
+        n = len(df)
+        x = df.iloc[n-look_back:n]
         x['code_s'] = code_name
         collected_x= pd.concat([collected_x, x])
         codes.append(code_name)
@@ -82,9 +86,14 @@ def predict(data, paths):
 
 
 if __name__ == "__main__":
-    # data = pd.read_csv("./valid.csv")
-    # res = predict("./trained_model/", data)
-    # index = np.argsort(-res)[:20]
+    config = decode_configer()
+
+    data = pd.read_csv("./data/processed_data/valid.csv")
+    res = predict(data, config['path'])
+    index = np.argsort(-res)
+    a = np.array(data['target'])[res >= 3]
+    print("当前测试集的胜率为", sum(a > 0.2) / len(a))
+
     # k = 0
     # for i in index:
     #     if np.array(data['target'])[i] > 3:
@@ -93,9 +102,10 @@ if __name__ == "__main__":
     # plt.plot(res[index])
     # plt.plot(list(np.array(data['target'])[index]))
     # plt.show()
-    config = decode_configer()
+
+    # download_all(config['path'])
     data = get_now_sample(config)
     res = predict(data, config['path'])
     res = pd.DataFrame(res)
     res.index = data.index
-    res.to_csv("result.csv")
+    res.to_csv("result.csv", header=None)

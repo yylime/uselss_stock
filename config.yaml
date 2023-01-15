@@ -2,7 +2,7 @@ path:
   config: config
   original_data: data/all_data
   processed_data: data/processed_data
-  trained_model: trained_model
+  trained_model: model
 
 # 是否进行特征提取
 featured_extract: False
@@ -12,11 +12,11 @@ ml_parameters:
   # 多线程数 
   n_job: 4
   # 基于tsfresh采样特征股票的数目
-  sample_num: 200
+  sample_num: 400
   # 滑动窗口构建的训练数据，每个股票采样的时间序列数目
-  sample_ts_num: 600
+  sample_ts_num: 300
   # tsfresh batch_size
-  sample_batch_size: 20
+  sample_batch_size: 40
   # sample_rate
   sample_rate: 0.9
 

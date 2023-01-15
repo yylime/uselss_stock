@@ -29,6 +29,8 @@ warnings.filterwarnings('ignore')
 # 根据look_back 和 look_up 对时间序列进行切片
 def get_samples(path, features:list, look_back=15, look_up=5):
     df = pd.read_csv(path)
+    # 对y的缺失值填补
+    df['pctChg'] = df['pctChg'].fillna(0)
     # 固有属性
     code_name = df['code'].iloc[0]
     # 要部分特征

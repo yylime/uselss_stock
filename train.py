@@ -28,23 +28,29 @@ if __name__ == "__main__":
     # download_all(config['path'])
     # print("原始数据下载完成！")
     # 数据预处理
-    data_process(config, force=True)
-    # # 读取处理好的数据作为输入
-    # paths = config['path']
-    # trian_path = os.path.join(paths['processed_data'], "train.csv")
-    # data = pd.read_csv(trian_path)
-    # with open(os.path.join(paths['config'], "selected_features.txt"), "r") as f:
-    #     selected_features = [item.replace('\n', '') for item in f.readlines()]
-    # data = data[selected_features + ['target']]
-    # print(data.info())
-    # data = data.dropna(axis=0, subset = ["target"])
- 
-    # features = [x for x in data.columns if x not in ['target']]
-    # train_x = data[features].copy()
-    # train_y = data['target']
+    data_process(config, force=False)
+    # 读取处理好的数据作为输入
+    paths = config['path']
+    with open(os.path.join(paths['config'], "selected_features.txt"), "r") as f:
+        selected_features = [item.replace('\n', '') for item in f.readlines()]
 
-    # # 训练
-    # trainer = Trainer(train_x=train_x, train_y=train_y)
+    trian_path = os.path.join(paths['processed_data'], "train.csv")
+    train_data = pd.read_csv(trian_path)
+    train_data = train_data[selected_features + ['target']]
+    train_data = train_data.dropna(axis=0, subset = ["target"])
+    # valid
+    valid_path = os.path.join(paths['processed_data'], "valid.csv")
+    valid_data = pd.read_csv(valid_path)
+    valid_data = valid_data.dropna(axis=0, subset = ["target"])
+
+    features = [x for x in train_data.columns if x not in ['target']]
+
+    train_x = train_data[features].copy()
+    train_y = train_data['target']
+    valid_x = valid_data[features].copy()
+    valid_y = valid_data['target']
+
+    # 训练
+    trainer = Trainer(train_x=train_x, train_y=train_y, valid_x=valid_x, valid_y=valid_y)
+    trainer.catboost_train_with_valid(paths['trained_model'])
     # trainer.catboost_train(cv=5, model_path=paths['trained_model'])
-
-    
