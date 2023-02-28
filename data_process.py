@@ -26,17 +26,27 @@ from random import sample
 warnings.filterwarnings('ignore')
 
 
-# 根据look_back 和 look_up 对时间序列进行切片
-def get_samples(path, features:list, look_back=15, look_up=5):
-    df = pd.read_csv(path)
+def pre_proceeDf(df, features):
     # 对y的缺失值填补
     df['pctChg'] = df['pctChg'].fillna(0)
-    # 固有属性
-    code_name = df['code'].iloc[0]
     # 要部分特征
     df['pctRange'] = (df['high'] - df['low']) / df['low']
+    # 增加平均成交以及今日涨跌与平均成交的偏离度
+    df['mean_deal'] = df['amount'] / (df['volume'] + 1e-8)
+    df['bd'] = (df['close'] - df['preclose']) / (df['mean_deal'] + 1e-8)
     # 加入close似乎有负面的影响 2022-01-12
     df = df[features]
+    return df
+
+
+# 根据look_back 和 look_up 对时间序列进行切片
+def get_samples(path, features:list, look_back=15, look_up=5, ts_rate=1):
+    df = pd.read_csv(path)
+    # 固有属性
+    code_name = df['code'].iloc[0]
+    # 手动特征
+    df = pre_proceeDf(df, features)
+
     #便于后续的采样，ret_x使用list来存储
     ret_x, ret_y = [], pd.Series()
     n = len(df)
@@ -44,6 +54,9 @@ def get_samples(path, features:list, look_back=15, look_up=5):
         x = df.iloc[i:i + look_back]
         x['code_s'] = code_name + '_' + str(i)
         y = sum(df['pctChg'].iloc[i + look_back:i + look_back + look_up])
+        # 对时间样本进行随机采样
+        if random.random() > ts_rate:
+            continue
         ret_x.append(x)
         ret_y[code_name + '_' + str(i)] = y
     return ret_x, ret_y
@@ -56,6 +69,7 @@ def featured_select(path_list, path, config):
         'sample_batch_size'], config['sample_rate'], config['sample_ts_num']
     look_back, look_up = config['look_back'], config['look_up']
     n_job = config['n_job']
+    ts_rate = config['ts_rate']
     # 初始化
     sample_list = sample(path_list, sample_num)
     collected_x = pd.DataFrame()
@@ -63,7 +77,7 @@ def featured_select(path_list, path, config):
     all_features = []
     # tsfresh 自带多进程，无需额外开启
     for idx, p in enumerate(tqdm(sample_list), start=1):
-        x, y = get_samples(p, config['original_features'], look_back, look_up)
+        x, y = get_samples(p, config['original_features'], look_back, look_up, ts_rate)
         sample_ts_set = sample(range(len(x)), min(sample_ts_num, len(x)))
         sample_x = [x[i] for i in sample_ts_set]
         collected_x = pd.concat([collected_x] + sample_x)
@@ -80,6 +94,10 @@ def featured_select(path_list, path, config):
                 n_jobs=n_job,
                 disable_progressbar=True)
             all_features.extend(list(featured_x.columns))
+            # download sample
+            featured_x['y'] = y
+            featured_x.to_csv(os.path.join(path,
+                                           f"feature_select_batc_{idx}.csv"))
             collected_x = pd.DataFrame()
             collected_y = pd.Series()
 
@@ -99,13 +117,17 @@ def featured_select(path_list, path, config):
 
 
 # # 测试集和验证集样本构建
-def merge_samples(path_list, config):
+def merge_samples(path_list, config, f="train"):
     # 参数设置
     paths = config['path']
     ml_parameters = config['ml_parameters']
     look_back, look_up = ml_parameters['look_back'], ml_parameters['look_up']
     n_job = ml_parameters['n_job']
     train_batch = ml_parameters['train_batch']
+    if f == "train":
+        ts_rate = ml_parameters['ts_rate']
+    else:
+        ts_rate = 1
     # 数据返回
     collected_x, collected_y = pd.DataFrame(), pd.Series()
     ret_df = pd.DataFrame()
@@ -117,10 +139,10 @@ def merge_samples(path_list, config):
         selected_features)
 
     for num, p in enumerate(tqdm(path_list), start=1):
-        x, y = get_samples(p, ml_parameters['original_features'], look_back, look_up)
+        x, y = get_samples(p, ml_parameters['original_features'], look_back, look_up, ts_rate)
         collected_x = pd.concat([collected_x] + x)
         collected_y = pd.concat([collected_y, y])
-        collected_x = collected_x.fillna(0.)
+        collected_x = collected_x.fillna(0)
 
         if num % train_batch == 0 or num == len(path_list):
             featured_x = extract_features(
@@ -137,7 +159,7 @@ def merge_samples(path_list, config):
     return ret_df
 
 
-def data_process(config):
+def data_process(config, full=True):
     paths = config['path']
     ml_parameters = config['ml_parameters']
 
@@ -153,12 +175,13 @@ def data_process(config):
         if config['featured_extract']:
             features = featured_select(train_paths, paths['config'], ml_parameters)
             print("特征提取完毕，请在config目录下查看")
+            return "只进行了特征提取"
         # 数据处理
-        train_data = merge_samples(train_paths, config)
+        train_data = merge_samples(train_paths, config, f="train")
         train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
                           encoding='utf-8',
                           index=False)
-        valid_data = merge_samples(vaild_paths, config)
+        valid_data = merge_samples(vaild_paths, config, f="valid")
         valid_data.to_csv(os.path.join(paths['processed_data'], 'valid.csv'),
                           encoding='utf-8',
                           index=False)

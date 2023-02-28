@@ -5,7 +5,8 @@ path:
   trained_model: model
 
 # 是否进行特征提取
-featured_extract: True
+featured_extract: False
+train: True
 
 ml_parameters:
   # batch_size的大小并不会影响效率，但是会爆内存
@@ -19,6 +20,8 @@ ml_parameters:
   sample_batch_size: 200
   # sample_rate
   sample_rate: 0.9
+  # 每个股票进行训练数据制作的时候进行采样
+  ts_rate: 0.5
 
   # train_data batch
   train_batch: 200
@@ -29,6 +32,6 @@ ml_parameters:
   look_up: 5
   train_split: 0.9
 
-  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'peTTM', 'pbMRQ', 'psTTM', 'pcfNcfTTM']
+  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount']
 
 

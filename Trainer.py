@@ -35,7 +35,7 @@ class Trainer:
 
         mean_squared_error = metrics.mean_squared_error(valid_y, valid_predict)
         print("均方误差为", mean_squared_error)
-        return mean_squared_error
+        return mean_squared_error, model
 
 
     def catboost_train(self, cv=5, model_path="trained_model"):
@@ -44,12 +44,13 @@ class Trainer:
         for index, (train_idx, valid_idx) in enumerate(fold.split(self.x, self.y)):
             # model
             model = CatBoostRegressor(
+                loss_function = "MAE",
                 iterations=4000,
-                depth=8,
-                learning_rate=0.1,
+                depth=10,
+                learning_rate=0.05,
                 task_type="GPU",
-                bagging_temperature=0.8,
-                early_stopping_rounds=150,
+                # bagging_temperature=0.8,
+                early_stopping_rounds=200,
                 random_state=823
             )
             

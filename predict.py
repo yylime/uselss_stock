@@ -9,6 +9,7 @@ import yaml
 import warnings
 from downloader import download_all
 import numpy as np
+from data_process import pre_proceeDf
 warnings.filterwarnings('ignore')
 
 def decode_configer(path="config.yaml"):
@@ -33,15 +34,9 @@ def get_now_sample(config):
     codes = []
     for p in tqdm(os.listdir(data_dir)):
         df = pd.read_csv(os.path.join(data_dir, p))
-        df['pctChg'] = df['pctChg'].fillna(0)
-        # 固有属性
         code_name = df['code'].iloc[0]
-        # 要部分特征
-        df['pctRange'] = (df['high'] - df['low']) / df['low']
-        # 我发现不适用当日的成交价似乎更好一点
-        df = df[features]
-        n = len(df)
-        x = df.iloc[n-look_back:n]
+        df = pre_proceeDf(df, features)
+        x = df.iloc[-look_back:]
         x['code_s'] = code_name
         collected_x= pd.concat([collected_x, x])
         codes.append(code_name)
