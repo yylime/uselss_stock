@@ -7,6 +7,7 @@ trained_model
 catboost_info
 result.csv
 config
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
