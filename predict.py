@@ -22,7 +22,7 @@ def decode_configer(path="config.yaml"):
     return config
 
 def get_now_sample(config):
-    paths = config['path']
+    paths = config['path'] 
     ml_parameters = config['ml_parameters']
     # 参数
     look_back = ml_parameters['look_back']
