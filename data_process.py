@@ -22,8 +22,33 @@ from multiprocessing import Pool
 from tqdm import tqdm
 import tsfresh
 from random import sample
+import talib
+import talib.abstract as ta
 
 warnings.filterwarnings('ignore')
+
+
+## 增加新的常用的指标
+def add_indectors(df):
+    ## add macd and kdj
+    # Calculate the MACD indicator
+    df['macd'], df['macd_signal'], df['macd_hist'] = talib.MACD(df['close'])
+
+    # Calculate the KDJ indicator
+    high = df['high'].rolling(9).max()
+    low = df['low'].rolling(9).min()
+    rsv = (df['close'] - low) / (high - low) * 100
+    df['k'] = talib.SMA(rsv, timeperiod=3)
+    df['d'] = talib.SMA(df['k'], timeperiod=3)
+    df['j'] = 3 * df['k'] - 2 * df['d']
+    df['kMj'] = df['k'] * df['j'] / (df['k'] + df['j'])
+    df['kdj'] = (df['k'] >= df['d']) * 4 +  (df['d'] >= df['j']) * 2  + (df['j'] >= df['k'])
+    rsi_period = 14
+    df['rsi'] = ta.RSI(df, timeperiod=rsi_period, price='close')
+    # drop before nan
+    df = df.iloc[14:]
+    return df
+
 
 
 def pre_proceeDf(df, features):
@@ -35,6 +60,7 @@ def pre_proceeDf(df, features):
     df['mean_deal'] = df['amount'] / (df['volume'] + 1e-8)
     df['bd'] = (df['close'] - df['preclose']) / (df['mean_deal'] + 1e-8)
     # 加入close似乎有负面的影响 2022-01-12
+    df = add_indectors(df)
     df = df[features]
     return df
 
@@ -63,7 +89,7 @@ def get_samples(path, features:list, look_back=15, look_up=5, ts_rate=1):
 
 
 # 特征筛选
-def featured_select(path_list, path, config):
+def featured_select(path_list, paths, config):
     # 参数
     sample_num, sample_batch_size, sample_rate, sample_ts_num = config['sample_num'], config[
         'sample_batch_size'], config['sample_rate'], config['sample_ts_num']
@@ -96,8 +122,9 @@ def featured_select(path_list, path, config):
             all_features.extend(list(featured_x.columns))
             # download sample
             featured_x['y'] = y
-            featured_x.to_csv(os.path.join(path,
-                                           f"feature_select_batc_{idx}.csv"))
+            featured_x.to_csv(
+                os.path.join(paths['selected_data'],
+                             f"feature_select_batc_{idx}.csv"))
             collected_x = pd.DataFrame()
             collected_y = pd.Series()
 
@@ -109,9 +136,9 @@ def featured_select(path_list, path, config):
     for f, cnt in counter.items():
         if cnt >= rate:
             selected_features.append(f)
-    with open(os.path.join(path, "all_samples_features.txt"), 'w') as f:
+    with open(os.path.join(paths['config'], "all_samples_features.txt"), 'w') as f:
         f.writelines(all_features)
-    with open(os.path.join(path, "selected_features.txt"), 'w') as f:
+    with open(os.path.join(paths['config'], "selected_features.txt"), 'w') as f:
         f.writelines(selected_features)
     return selected_features
 
@@ -159,11 +186,11 @@ def merge_samples(path_list, config, f="train"):
     return ret_df
 
 
-def data_process(config, full=True):
+def data_process(config):
     paths = config['path']
     ml_parameters = config['ml_parameters']
 
-    if "train.csv" not in os.listdir(paths['processed_data']):
+    if config["train"]:
         root_path = paths['original_data']
         all_paths = [os.path.join(root_path, p) for p in os.listdir(root_path)]
         # 随机
@@ -173,21 +200,25 @@ def data_process(config, full=True):
         train_paths, vaild_paths = r_all_paths[:n_split], r_all_paths[n_split:]
         # 特征选择，这里采用的是随机采样QAQ
         if config['featured_extract']:
-            features = featured_select(train_paths, paths['config'], ml_parameters)
+            features = featured_select(train_paths, paths, ml_parameters)
             print("特征提取完毕，请在config目录下查看")
             return "只进行了特征提取"
         # 数据处理
         train_data = merge_samples(train_paths, config, f="train")
         train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
-                          encoding='utf-8',
-                          index=False)
+                        encoding='utf-8',
+                        index=False)
         valid_data = merge_samples(vaild_paths, config, f="valid")
         valid_data.to_csv(os.path.join(paths['processed_data'], 'valid.csv'),
-                          encoding='utf-8',
-                          index=False)
+                        encoding='utf-8',
+                        index=False)
     else:
         print("请注意现在正在使用之前的数据进行训练！")
 
 
 if __name__ == "__main__":
-    pass
+    path = r"data\all_data\sz.003042.csv"
+    data = pd.read_csv(path)
+    print(data.head())
+    data = add_indectors(data)
+    print(data.iloc[100:108])

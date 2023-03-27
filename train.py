@@ -25,10 +25,10 @@ if __name__ == "__main__":
     # 参数读取
     config = decode_configer()
     # 下载数据 增量下载
-    download_all(config['path'])
+    # download_all(config['path'])
     print("原始数据下载完成！")
     # 数据预处理
-    data_process(config, config['featured_extract'])
+    data_process(config)
     # 方便调试
     if config['train']:
         # 读取处理好的数据作为输入

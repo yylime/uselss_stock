@@ -3,6 +3,7 @@ path:
   original_data: data/all_data
   processed_data: data/processed_data
   trained_model: model
+  selected_data: data/selected_data
 
 # 是否进行特征提取
 featured_extract: False
@@ -32,6 +33,6 @@ ml_parameters:
   look_up: 5
   train_split: 0.9
 
-  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount']
+  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount', 'kMj', 'kdj', 'j', 'macd', 'macd_signal', 'rsi']
 
 
