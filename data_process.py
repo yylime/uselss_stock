@@ -45,8 +45,21 @@ def add_indectors(df):
     df['kdj'] = (df['k'] >= df['d']) * 4 +  (df['d'] >= df['j']) * 2  + (df['j'] >= df['k'])
     rsi_period = 14
     df['rsi'] = ta.RSI(df, timeperiod=rsi_period, price='close')
+    # SMA features
+    df['ma5'] = ta.SMA(df['close'], timeperiod=5)
+    df['ma10'] = ta.SMA(df['close'], timeperiod=10)
+    df['ma20'] = ta.SMA(df['close'], timeperiod=20)
+    df["ma5_close"] = df['ma5'] - df['close']
+    df["ma10_close"] = df['ma10'] - df['close']
+    df["ma20_close"] = df['ma20'] - df['close']
+    df['ma5_ma20'] = df['ma5'] - df['ma20']
+    # obv
+    df['obv'] = talib.OBV(df['close'], df['volume'])
+    df['atr']=ta.ATR(df.high, df.low, df.close, timeperiod=14)
+    df['natr']=ta.NATR(df.high, df.low, df.close, timeperiod=14)
+
     # drop before nan
-    df = df.iloc[14:]
+    df = df.iloc[20:]
     return df
 
 
@@ -190,19 +203,19 @@ def data_process(config):
     paths = config['path']
     ml_parameters = config['ml_parameters']
 
-    if config["train"]:
-        root_path = paths['original_data']
-        all_paths = [os.path.join(root_path, p) for p in os.listdir(root_path)]
-        # 随机
-        random.seed(823)
-        r_all_paths = random.sample(all_paths, len(all_paths))
-        n_split = int(len(r_all_paths) * ml_parameters['train_split'])
-        train_paths, vaild_paths = r_all_paths[:n_split], r_all_paths[n_split:]
-        # 特征选择，这里采用的是随机采样QAQ
-        if config['featured_extract']:
-            features = featured_select(train_paths, paths, ml_parameters)
-            print("特征提取完毕，请在config目录下查看")
-            return "只进行了特征提取"
+    root_path = paths['original_data']
+    all_paths = [os.path.join(root_path, p) for p in os.listdir(root_path)]
+    # 随机
+    random.seed(823)
+    r_all_paths = random.sample(all_paths, len(all_paths))
+    n_split = int(len(r_all_paths) * ml_parameters['train_split'])
+    train_paths, vaild_paths = r_all_paths[:n_split], r_all_paths[n_split:]
+    # 特征选择，这里采用的是随机采样QAQ
+    if config['featured_extract']:
+        features = featured_select(train_paths, paths, ml_parameters)
+        print("特征提取完毕，请在config目录下查看")
+        return "只进行了特征提取"
+    else:
         # 数据处理
         train_data = merge_samples(train_paths, config, f="train")
         train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
@@ -212,8 +225,6 @@ def data_process(config):
         valid_data.to_csv(os.path.join(paths['processed_data'], 'valid.csv'),
                         encoding='utf-8',
                         index=False)
-    else:
-        print("请注意现在正在使用之前的数据进行训练！")
 
 
 if __name__ == "__main__":

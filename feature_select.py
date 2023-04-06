@@ -28,6 +28,8 @@ def select_by_catboost():
         importance = model.feature_importances_
         names = model.feature_names_
 
+        if not os.path.exists("config\catfeature_importance"):
+            os.makedirs("config\catfeature_importance")
         pd.Series(data=importance, index=names).to_csv(
             os.path.join("config\catfeature_importance", f"{index}.csv"))
     return None
@@ -44,7 +46,8 @@ def cal():
             h.append((data.index[i], data.iloc[i].values[0]))
         h = sorted(h, key=lambda x:-x[1])
         for i in range(min(30, len(h))):
-            hs.add(h[i][0] + '\n')
+            if 'pctChg' not in h[i][0]:
+                hs.add(h[i][0] + '\n')
 
     with open("config\selected_features.txt", 'w') as f:
         f.writelines(list(hs))

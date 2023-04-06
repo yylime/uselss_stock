@@ -33,6 +33,9 @@ ml_parameters:
   look_up: 5
   train_split: 0.9
 
-  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount', 'kMj', 'kdj', 'j', 'macd', 'macd_signal', 'rsi']
+  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount', 'kMj', 'kdj', 'j', 'macd', 'macd_signal', 'rsi', "ma5_close", 'ma10_close', 'ma20_close', 'ma5_ma20', 'obv', 'atr', 'natr']
+
+  # 微调的数据特征
+  # original_features : ["ma5_close", 'ma10_close', 'ma20_close', 'ma5_ma20', 'obv', 'atr', 'natr', 'pctChg']
 
 
