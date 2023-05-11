@@ -15,12 +15,12 @@ class Trainer:
     def catboost_train_with_valid(self, model_path="trained_model"):
 
         oof = np.zeros((len(self.x), ))
-        model = CatBoostRegressor(iterations=4000,
-                                    depth=8,
+        model = CatBoostRegressor(iterations=8000,
+                                    depth=10,
                                     learning_rate=0.05,
                                     task_type="GPU",
                                     bagging_temperature=0.2,
-                                    early_stopping_rounds=150,
+                                    early_stopping_rounds=100,
                                     random_state=823)
 
         train_x, train_y = self.x, self.y
@@ -44,13 +44,13 @@ class Trainer:
         for index, (train_idx, valid_idx) in enumerate(fold.split(self.x, self.y)):
             # model
             model = CatBoostRegressor(
-                loss_function = "MAE",
-                iterations=4000,
-                depth=10,
+                loss_function = "MASE",
+                iterations=8000,
+                depth=12,
                 learning_rate=0.05,
                 task_type="GPU",
                 # bagging_temperature=0.8,
-                early_stopping_rounds=200,
+                early_stopping_rounds=100,
                 random_state=823
             )
             

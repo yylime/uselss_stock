@@ -38,6 +38,7 @@ def add_indectors(df):
     high = df['high'].rolling(9).max()
     low = df['low'].rolling(9).min()
     rsv = (df['close'] - low) / (high - low) * 100
+    rsv = rsv.fillna(0)
     df['k'] = talib.SMA(rsv, timeperiod=3)
     df['d'] = talib.SMA(df['k'], timeperiod=3)
     df['j'] = 3 * df['k'] - 2 * df['d']
@@ -217,10 +218,10 @@ def data_process(config):
         return "只进行了特征提取"
     else:
         # 数据处理
-        train_data = merge_samples(train_paths, config, f="train")
-        train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
-                        encoding='utf-8',
-                        index=False)
+        # train_data = merge_samples(train_paths, config, f="train")
+        # train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
+        #                 encoding='utf-8',
+        #                 index=False)
         valid_data = merge_samples(vaild_paths, config, f="valid")
         valid_data.to_csv(os.path.join(paths['processed_data'], 'valid.csv'),
                         encoding='utf-8',

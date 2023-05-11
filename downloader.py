@@ -17,7 +17,7 @@ bs.login()
 
 # path 中包含了股票的代码, 不包括创业板和st
 def download_one(path,
-                 start_date='2019-01-01',
+                 start_date='2018-01-01',
                  end_date=date.today().strftime(r"%Y-%m-%d")):
     code = os.path.basename(path)
     # 只看深市和上市
@@ -54,7 +54,7 @@ def download_one(path,
 
 
 def download_online_codes(path):
-    stock_rs = bs.query_all_stock('2022-12-27')
+    stock_rs = bs.query_all_stock('2023-05-09')
     result = stock_rs.get_data()
     ret = []
     for i in tqdm(range(len(result))):
@@ -97,5 +97,5 @@ def download_all(config):
 if __name__ == '__main__':
 
     # 第一次运行需要加入
-    # download_online_codes()
+    download_online_codes('config\code.txt')
     download_all({'config': 'config', 'original_data': 'data/all_data'})

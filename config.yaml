@@ -14,13 +14,13 @@ ml_parameters:
   # 多线程数 
   n_job: 4
   # 基于tsfresh采样特征股票的数目
-  sample_num: 2000
+  sample_num: 1500
   # 滑动窗口构建的训练数据，每个股票采样的时间序列数目
   sample_ts_num: 50
   # tsfresh batch_size
   sample_batch_size: 200
   # sample_rate
-  sample_rate: 0.9
+  sample_rate: 0.8
   # 每个股票进行训练数据制作的时候进行采样
   ts_rate: 0.5
 
@@ -33,7 +33,7 @@ ml_parameters:
   look_up: 5
   train_split: 0.9
 
-  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount', 'kMj', 'kdj', 'j', 'macd', 'macd_signal', 'rsi', "ma5_close", 'ma10_close', 'ma20_close', 'ma5_ma20', 'obv', 'atr', 'natr']
+  original_features: ['volume', 'turn', 'pctChg', 'pctRange', 'pbMRQ', 'psTTM', "bd", 'amount', 'kMj', 'kdj', 'macd', 'rsi', "ma5_close", 'ma20_close', 'ma5_ma20', 'obv', 'atr', 'natr', 'close']
 
   # 微调的数据特征
   # original_features : ["ma5_close", 'ma10_close', 'ma20_close', 'ma5_ma20', 'obv', 'atr', 'natr', 'pctChg']

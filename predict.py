@@ -89,11 +89,11 @@ def predict(data, paths):
 if __name__ == "__main__":
     config = decode_configer()
 
-    data = pd.read_csv("./data/processed_data/valid.csv")
-    res = predict(data, config['path'])
-    index = np.argsort(-res)
-    a = np.array(data['target'])[res >= 3]
-    print("当前测试集的胜率为", sum(a > 0.2) / len(a))
+    # data = pd.read_csv("./data/processed_data/valid.csv")
+    # res = predict(data, config['path'])
+    # index = np.argsort(-res)
+    # a = np.array(data['target'])[res >= 3]
+    # print("当前测试集的胜率为", sum(a > 0.2) / len(a))
 
     download_all(config['path'])
     data = get_now_sample(config)
