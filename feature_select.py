@@ -63,7 +63,7 @@ def select_by_percent():
             res.append(f)
     # with open("selected_features.txt", 'w') as f:
     #     f.writelines(res)
-    print(len(res))
+    # print(len(res))
     res = []
     for f, cnt in counter.items():
         if cnt >= 10:

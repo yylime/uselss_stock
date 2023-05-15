@@ -93,7 +93,9 @@ def get_samples(path, features:list, look_back=15, look_up=5, ts_rate=1):
     for i in range(n - look_back - look_up):
         x = df.iloc[i:i + look_back]
         x['code_s'] = code_name + '_' + str(i)
-        y = sum(df['pctChg'].iloc[i + look_back:i + look_back + look_up])
+        # y = sum(df['pctChg'].iloc[i + look_back:i + look_back + look_up])
+        # 上述的计算方法是错误的，百分比的叠加不能正确反映出真实的涨跌幅度，应该使用 close - pre_close / pre_close * 100 计算
+        y = df['close'].iloc[i + look_back + look_up] - df['close'].iloc[i + look_back - 1] / df['close'].iloc[i + look_back - 1]
         # 对时间样本进行随机采样
         if random.random() > ts_rate:
             continue
