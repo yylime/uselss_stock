@@ -24,14 +24,16 @@ import tsfresh
 from random import sample
 import talib
 import talib.abstract as ta
+import numpy as np
 
 warnings.filterwarnings('ignore')
 
 
 ## 增加新的常用的指标
-def add_indectors(df):
+def add_indectors(df: pd.DataFrame):
     ## add macd and kdj
     # Calculate the MACD indicator
+    df = df.fillna(0)
     df['macd'], df['macd_signal'], df['macd_hist'] = talib.MACD(df['close'])
 
     # Calculate the KDJ indicator
@@ -61,6 +63,7 @@ def add_indectors(df):
 
     # drop before nan
     df = df.iloc[20:]
+    df.replace([np.inf, -np.inf], np.nan, inplace=True)
     return df
 
 
@@ -95,7 +98,7 @@ def get_samples(path, features:list, look_back=15, look_up=5, ts_rate=1):
         x['code_s'] = code_name + '_' + str(i)
         # y = sum(df['pctChg'].iloc[i + look_back:i + look_back + look_up])
         # 上述的计算方法是错误的，百分比的叠加不能正确反映出真实的涨跌幅度，应该使用 close - pre_close / pre_close * 100 计算
-        y = df['close'].iloc[i + look_back + look_up] - df['close'].iloc[i + look_back - 1] / df['close'].iloc[i + look_back - 1]
+        y = (df['close'].iloc[i + look_back + look_up] - df['close'].iloc[i + look_back - 1]) / df['close'].iloc[i + look_back - 1]
         # 对时间样本进行随机采样
         if random.random() > ts_rate:
             continue
@@ -220,10 +223,10 @@ def data_process(config):
         return "只进行了特征提取"
     else:
         # 数据处理
-        # train_data = merge_samples(train_paths, config, f="train")
-        # train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
-        #                 encoding='utf-8',
-        #                 index=False)
+        train_data = merge_samples(train_paths, config, f="train")
+        train_data.to_csv(os.path.join(paths['processed_data'], 'train.csv'),
+                        encoding='utf-8',
+                        index=False)
         valid_data = merge_samples(vaild_paths, config, f="valid")
         valid_data.to_csv(os.path.join(paths['processed_data'], 'valid.csv'),
                         encoding='utf-8',

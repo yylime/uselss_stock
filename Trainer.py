@@ -15,8 +15,8 @@ class Trainer:
     def catboost_train_with_valid(self, model_path="trained_model"):
 
         oof = np.zeros((len(self.x), ))
-        model = CatBoostRegressor(iterations=8000,
-                                    depth=10,
+        model = CatBoostRegressor(iterations=3000,
+                                    depth=8,
                                     learning_rate=0.05,
                                     task_type="GPU",
                                     bagging_temperature=0.2,

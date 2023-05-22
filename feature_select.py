@@ -45,7 +45,7 @@ def cal():
         for i in range(len(data)):
             h.append((data.index[i], data.iloc[i].values[0]))
         h = sorted(h, key=lambda x:-x[1])
-        for i in range(min(40, len(h))):
+        for i in range(min(30, len(h))):
             if 'pctChg' not in h[i][0]:
                 hs.add(h[i][0] + '\n')
 

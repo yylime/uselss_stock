@@ -17,8 +17,8 @@ ml_parameters:
   sample_num: 1500
   # 滑动窗口构建的训练数据，每个股票采样的时间序列数目
   sample_ts_num: 50
-  # tsfresh batch_size
-  sample_batch_size: 200
+  # tsfresh batch_size / out of memory
+  sample_batch_size: 100
   # sample_rate
   sample_rate: 0.8
   # 每个股票进行训练数据制作的时候进行采样
